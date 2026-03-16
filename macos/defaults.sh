@@ -61,6 +61,6 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 '
 # Disable Apple Passwords autofill (use 1Password instead)
 echo "→ Disabling Apple Passwords autofill..."
 pluginkit -e ignore -i com.apple.Passwords
-defaults write com.apple.Safari AutoFillPasswords -bool false
+defaults write ~/Library/Containers/com.apple.Safari/Data/Library/Preferences/com.apple.Safari AutoFillPasswords -bool false
 
 echo "✓ Done"
