@@ -1,5 +1,5 @@
 #!/bin/bash
-# macOS system preferences — run after setup wizard, before Homebrew
+# macOS system preferences — safe to run multiple times (idempotent)
 set -euo pipefail
 
 echo "=== macOS Defaults ==="
@@ -57,12 +57,6 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 '
     </dict>
 </dict>'
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-
-# Disable Apple Passwords autofill (use 1Password instead)
-echo "→ Disabling Apple Passwords autofill..."
-pluginkit -e ignore -i com.apple.Passwords
-# NOTE: Safari autofill can't be disabled via defaults write on modern macOS (sandboxed).
-# Manual step: Safari > Settings > AutoFill > uncheck "Usernames and passwords"
 
 # Clear all pinned Dock icons (Finder and Trash remain)
 echo "→ Clearing Dock..."

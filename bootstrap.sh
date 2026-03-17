@@ -1,5 +1,5 @@
 #!/bin/bash
-# Bootstrap a fresh Mac from scratch.
+# Bootstrap a fresh Mac from scratch. Safe to run multiple times (idempotent).
 # Usage: git clone https://github.com/samdengler/dotfiles.git ~/.dotfiles && ~/.dotfiles/bootstrap.sh
 set -euo pipefail
 
@@ -7,7 +7,7 @@ DOTFILES="$(cd "$(dirname "$0")" && pwd)"
 
 echo "=== Bootstrap ==="
 
-# 1. macOS defaults (no dependencies)
+# 1. macOS defaults
 echo ""
 echo "--- macOS Defaults ---"
 bash "$DOTFILES/macos/defaults.sh"
@@ -28,13 +28,13 @@ echo ""
 echo "--- Brew Bundle ---"
 brew bundle --file="$DOTFILES/Brewfile"
 
-# 4. Shell config
+# 4. Shell config (symlink — re-running just overwrites the same link)
 echo ""
 echo "--- Shell Config ---"
 for file in .zshenv .zshrc; do
     src="$DOTFILES/zsh/$file"
     dst="$HOME/$file"
-    if [ -f "$dst" ]; then
+    if [ -f "$dst" ] && [ ! -L "$dst" ]; then
         echo "→ Backing up existing $file to ${file}.bak"
         cp "$dst" "${dst}.bak"
     fi
@@ -53,10 +53,12 @@ echo "→ Node $(node -v) installed"
 echo ""
 echo "=== Bootstrap complete ==="
 echo ""
-echo "Next steps:"
+echo "Manual steps:"
 echo "  1. Open 1Password and sign in"
 echo "  2. Install 1Password Safari extension (App Store)"
-echo "  3. Open Alfred, set Cmd+Space as hotkey"
-echo "  4. Open Tailscale, sign in"
-echo "  5. Run 'claude' to authenticate Claude Code"
-echo "  6. Restart your terminal to pick up shell config"
+echo "  3. Safari > Settings > AutoFill > uncheck 'Usernames and passwords'"
+echo "  4. Safari > Settings > Extensions > disable 'Passwords'"
+echo "  5. Open Alfred, set Cmd+Space as hotkey"
+echo "  6. Open Tailscale, sign in"
+echo "  7. Run 'claude' to authenticate Claude Code"
+echo "  8. Restart your terminal to pick up shell config"
