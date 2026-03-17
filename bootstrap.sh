@@ -42,7 +42,13 @@ for file in .zshenv .zshrc; do
     echo "→ Linked $file"
 done
 
-# 5. mise
+# 5. App settings
+echo ""
+echo "--- App Settings ---"
+echo "→ Importing Rectangle Pro settings..."
+defaults import com.knollsoft.Hookshot "$DOTFILES/rectangle-pro/settings.plist"
+
+# 6. mise
 echo ""
 echo "--- mise ---"
 eval "$(/opt/homebrew/bin/brew shellenv)"
