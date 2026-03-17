@@ -71,4 +71,14 @@ defaults write com.apple.dock show-recents -bool false
 defaults write com.apple.dock tilesize -int 44
 killall Dock
 
+# Finder: list view by default
+echo "→ Configuring Finder..."
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+killall Finder
+
+# Screenshots: save to ~/Screenshots instead of Desktop
+echo "→ Setting screenshot location..."
+mkdir -p "$HOME/Screenshots"
+defaults write com.apple.screencapture location -string "$HOME/Screenshots"
+
 echo "✓ Done"
