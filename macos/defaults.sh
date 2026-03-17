@@ -63,9 +63,12 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 '
 </dict>'
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
-# Clear all pinned Dock icons (Finder and Trash remain)
-echo "→ Clearing Dock..."
+# Dock: clear icons, auto-hide, no recents, icon size 44
+echo "→ Configuring Dock..."
 defaults write com.apple.dock persistent-apps -array
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock show-recents -bool false
+defaults write com.apple.dock tilesize -int 44
 killall Dock
 
 echo "✓ Done"
