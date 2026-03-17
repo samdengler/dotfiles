@@ -38,6 +38,11 @@ PLIST
 launchctl bootout gui/$(id -u) "$PLIST_FILE" 2>/dev/null || true
 launchctl bootstrap gui/$(id -u) "$PLIST_FILE"
 
+# Fast key repeat (lower = faster; defaults are 6/25)
+echo "→ Setting fast key repeat..."
+defaults write NSGlobalDomain KeyRepeat -int 2
+defaults write NSGlobalDomain InitialKeyRepeat -int 15
+
 # Disable Spotlight Cmd+Space (free it for Alfred)
 echo "→ Disabling Spotlight Cmd+Space..."
 defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 '
