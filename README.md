@@ -39,7 +39,8 @@ Then commit and push.
 2. Install 1Password Safari extension (App Store)
 3. Safari > Settings > AutoFill > uncheck "Usernames and passwords"
 4. Safari > Settings > Extensions > disable "Passwords"
-5. Open Alfred, set Cmd+Space as hotkey
-6. Open Tailscale, sign in
-7. Run `claude` to authenticate Claude Code
-8. Restart your terminal
+5. Open Rectangle Pro, activate license
+6. Open Alfred, set Cmd+Space as hotkey
+7. Open Tailscale, sign in
+8. Run `claude` to authenticate Claude Code
+9. Restart your terminal
