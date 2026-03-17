@@ -64,4 +64,9 @@ pluginkit -e ignore -i com.apple.Passwords
 # NOTE: Safari autofill can't be disabled via defaults write on modern macOS (sandboxed).
 # Manual step: Safari > Settings > AutoFill > uncheck "Usernames and passwords"
 
+# Clear all pinned Dock icons (Finder and Trash remain)
+echo "→ Clearing Dock..."
+defaults write com.apple.dock persistent-apps -array
+killall Dock
+
 echo "✓ Done"
