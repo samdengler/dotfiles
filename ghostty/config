@@ -1,0 +1,20 @@
+#theme = Gruvbox Material
+#theme = Gruvbox Dark
+theme = github-dark-dimmed
+
+# https://notes.iunknown.com/blog/2025/05/macbook-pro-setup
+#theme = Argonaut
+#minimum-contrast = 2
+#macos-titlebar-style = tabs
+#cursor-style = block
+#cursor-style-blink = true
+#cursor-color = ffff00
+
+working-directory = home
+window-inherit-working-directory = false
+
+# tmux pane switching: Ctrl+number sends Ctrl+b <num>
+keybind = ctrl+0=text:\x020
+keybind = ctrl+1=text:\x021
+keybind = ctrl+2=text:\x022
+keybind = ctrl+3=text:\x023

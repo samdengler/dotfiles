@@ -48,13 +48,24 @@ for file in .zshenv .zshrc; do
     echo "→ Linked $file"
 done
 
-# 6. App settings
+# 6. Ghostty
+echo ""
+echo "--- Ghostty ---"
+if [ -d "$HOME/.config/ghostty" ] && [ ! -L "$HOME/.config/ghostty" ]; then
+    echo "→ Backing up existing ghostty config to ghostty.bak"
+    mv "$HOME/.config/ghostty" "$HOME/.config/ghostty.bak"
+fi
+mkdir -p "$HOME/.config"
+ln -sf "$DOTFILES/ghostty" "$HOME/.config/ghostty"
+echo "→ Linked ghostty config"
+
+# 7. App settings
 echo ""
 echo "--- App Settings ---"
 echo "→ Importing Rectangle Pro settings..."
 defaults import com.knollsoft.Hookshot "$DOTFILES/rectangle-pro/settings.plist"
 
-# 7. mise
+# 8. mise
 echo ""
 echo "--- mise ---"
 eval "$(/opt/homebrew/bin/brew shellenv)"
