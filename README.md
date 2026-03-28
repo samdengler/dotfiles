@@ -42,5 +42,6 @@ Then commit and push.
 5. Open Rectangle Pro, activate license
 6. Open Alfred, set Cmd+Space as hotkey
 7. Open Tailscale, sign in
-8. Run `claude` to authenticate Claude Code
-9. Restart your terminal
+8. Run `gh auth login` to authenticate GitHub CLI
+9. Run `claude` to authenticate Claude Code
+10. Restart your terminal

@@ -28,7 +28,13 @@ echo ""
 echo "--- Brew Bundle ---"
 brew bundle --file="$DOTFILES/Brewfile"
 
-# 4. Shell config (symlink — re-running just overwrites the same link)
+# 4. GitHub CLI
+echo ""
+echo "--- GitHub CLI ---"
+gh auth setup-git
+echo "→ Configured git credential helper"
+
+# 5. Shell config (symlink — re-running just overwrites the same link)
 echo ""
 echo "--- Shell Config ---"
 for file in .zshenv .zshrc; do
@@ -42,13 +48,13 @@ for file in .zshenv .zshrc; do
     echo "→ Linked $file"
 done
 
-# 5. App settings
+# 6. App settings
 echo ""
 echo "--- App Settings ---"
 echo "→ Importing Rectangle Pro settings..."
 defaults import com.knollsoft.Hookshot "$DOTFILES/rectangle-pro/settings.plist"
 
-# 6. mise
+# 7. mise
 echo ""
 echo "--- mise ---"
 eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -67,5 +73,6 @@ echo "  4. Safari > Settings > Extensions > disable 'Passwords'"
 echo "  5. Open Rectangle Pro, activate license"
 echo "  6. Open Alfred, set Cmd+Space as hotkey"
 echo "  7. Open Tailscale, sign in"
-echo "  8. Run 'claude' to authenticate Claude Code"
-echo "  9. Restart your terminal to pick up shell config"
+echo "  8. Run 'gh auth login' to authenticate GitHub CLI"
+echo "  9. Run 'claude' to authenticate Claude Code"
+echo " 10. Restart your terminal to pick up shell config"
