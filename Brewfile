@@ -1,4 +1,5 @@
 # CLI tools
+brew "gh"
 brew "mise"
 
 # GUI apps (install 1Password first — needed for auth flows)
