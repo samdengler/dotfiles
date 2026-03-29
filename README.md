@@ -31,6 +31,7 @@ Then commit and push.
 | `macos/defaults.sh` | System preferences (scroll, caps lock, spotlight, dock) |
 | `zsh/.zshenv` | Homebrew PATH (all shells) |
 | `zsh/.zshrc` | mise + vi keybindings (interactive shells) |
+| `mise/config.toml` | Dev tool versions + global npm packages (Node, netlify-cli) |
 | `rectangle-pro/settings.plist` | Window management shortcuts and layouts |
 
 ## Manual steps (after bootstrap)
@@ -45,3 +46,7 @@ Then commit and push.
 8. Run `gh auth login` to authenticate GitHub CLI
 9. Run `claude` to authenticate Claude Code
 10. Restart your terminal
+
+## TODO
+
+- [ ] Investigate [GNU Stow](https://www.gnu.org/software/stow/) to replace manual symlink blocks in `bootstrap.sh`
