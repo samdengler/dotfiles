@@ -50,3 +50,4 @@ Then commit and push.
 ## TODO
 
 - [ ] Investigate [GNU Stow](https://www.gnu.org/software/stow/) to replace manual symlink blocks in `bootstrap.sh`
+- [ ] Solve Chrome extension bootstrap chicken-and-egg: need 1Password desktop app to get Google password, sign into Chrome, then extensions (1Password, Claude MCP) sync
