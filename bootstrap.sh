@@ -23,12 +23,33 @@ else
     echo "→ Homebrew already installed"
 fi
 
-# 3. Brewfile
+# 3. Sudoers (allow passwordless sudo for mas)
+echo ""
+echo "--- Sudoers ---"
+MAS_SUDOERS="/etc/sudoers.d/mas"
+if [ ! -f "$MAS_SUDOERS" ]; then
+    echo "→ Configuring passwordless sudo for mas (requires sudo password once)..."
+    echo "$(whoami) ALL=(ALL) NOPASSWD: /opt/homebrew/bin/mas" | sudo tee "$MAS_SUDOERS" > /dev/null
+    sudo chmod 440 "$MAS_SUDOERS"
+    sudo visudo -cf "$MAS_SUDOERS"
+    echo "→ Created $MAS_SUDOERS"
+else
+    echo "→ $MAS_SUDOERS already exists"
+fi
+
+# 4. Brewfile (mas apps require sudo, so install them separately)
 echo ""
 echo "--- Brew Bundle ---"
-brew bundle --file="$DOTFILES/Brewfile"
+MAS_APPS=$(grep '^mas ' "$DOTFILES/Brewfile" | sed 's/.*id: //' || true)
+HOMEBREW_BUNDLE_MAS_SKIP="$MAS_APPS" brew bundle --file="$DOTFILES/Brewfile"
+if [ -n "$MAS_APPS" ]; then
+    echo "→ Installing Mac App Store apps (requires sudo password)..."
+    for app_id in $MAS_APPS; do
+        sudo mas install "$app_id" || echo "⚠  Failed to install app $app_id — run 'sudo mas install $app_id' manually"
+    done
+fi
 
-# 4. Git config (before gh auth so credential helpers append to our file)
+# 5. Git config (before gh auth so credential helpers append to our file)
 echo ""
 echo "--- Git Config ---"
 if [ -f "$HOME/.gitconfig" ] && [ ! -L "$HOME/.gitconfig" ]; then
@@ -38,13 +59,13 @@ fi
 ln -sf "$DOTFILES/git/gitconfig" "$HOME/.gitconfig"
 echo "→ Linked .gitconfig"
 
-# 5. GitHub CLI
+# 6. GitHub CLI
 echo ""
 echo "--- GitHub CLI ---"
 gh auth setup-git
 echo "→ Configured git credential helper"
 
-# 6. Shell config (symlink — re-running just overwrites the same link)
+# 7. Shell config (symlink — re-running just overwrites the same link)
 echo ""
 echo "--- Shell Config ---"
 for file in .zshenv .zshrc; do
@@ -58,7 +79,7 @@ for file in .zshenv .zshrc; do
     echo "→ Linked $file"
 done
 
-# 7. Ghostty
+# 8. Ghostty
 echo ""
 echo "--- Ghostty ---"
 if [ -d "$HOME/.config/ghostty" ] && [ ! -L "$HOME/.config/ghostty" ]; then
@@ -69,7 +90,7 @@ mkdir -p "$HOME/.config"
 ln -sf "$DOTFILES/ghostty" "$HOME/.config/ghostty"
 echo "→ Linked ghostty config"
 
-# 8. Claude Code
+# 9. Claude Code
 echo ""
 echo "--- Claude Code ---"
 mkdir -p "$HOME/.claude"
@@ -89,13 +110,13 @@ else
 fi
 echo "→ Set vim mode and remote control in claude.json"
 
-# 9. App settings
+# 10. App settings
 echo ""
 echo "--- App Settings ---"
 echo "→ Importing Rectangle Pro settings..."
 defaults import com.knollsoft.Hookshot "$DOTFILES/rectangle-pro/settings.plist"
 
-# 10. mise
+# 11. mise
 echo ""
 echo "--- mise ---"
 mkdir -p "$HOME/.config/mise"

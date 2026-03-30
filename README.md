@@ -4,6 +4,9 @@ Mac setup, automated.
 
 ## Fresh machine
 
+1. Sign into the Mac App Store (required for `mas` installs)
+2. Run:
+
 ```bash
 git clone https://github.com/samdengler/dotfiles.git ~/.dotfiles
 ~/.dotfiles/bootstrap.sh
@@ -51,3 +54,4 @@ Then commit and push.
 
 - [ ] Investigate [GNU Stow](https://www.gnu.org/software/stow/) to replace manual symlink blocks in `bootstrap.sh`
 - [ ] Solve Chrome extension bootstrap chicken-and-egg: need 1Password desktop app to get Google password, sign into Chrome, then extensions (1Password, Claude MCP) sync
+- [ ] Fix Mail for Gmail `mas` install — "Redownload Unavailable with This Apple Account" (app ID 1587583867). May need to re-purchase on current Apple ID
