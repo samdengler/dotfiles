@@ -63,6 +63,13 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 '
 </dict>'
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
+# Mouse: enable right-click (click right side)
+echo "→ Enabling mouse right-click..."
+defaults write com.apple.AppleMultitouchMouse MouseButtonMode -string TwoButton
+defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseButtonMode -string TwoButton
+defaults write com.apple.AppleMultitouchMouse MouseButtonDivision -int 55
+defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseButtonDivision -int 55
+
 # Dock: clear icons, auto-hide, no recents, icon size 44
 echo "→ Configuring Dock..."
 defaults write com.apple.dock persistent-apps -array

@@ -1,6 +1,7 @@
 # CLI tools
 brew "gh"
 brew "mise"
+brew "dolt"
 brew "steveyegge/beads/bd"
 
 # GUI apps (install 1Password first — needed for auth flows)
