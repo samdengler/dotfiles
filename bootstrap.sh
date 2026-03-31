@@ -110,13 +110,31 @@ else
 fi
 echo "→ Set vim mode and remote control in claude.json"
 
-# 10. App settings
+# 10. Alfred (point preferences to dotfiles)
+echo ""
+echo "--- Alfred ---"
+ALFRED_PREFS_JSON="$HOME/Library/Application Support/Alfred/prefs.json"
+ALFRED_TARGET="$DOTFILES/alfred"
+if [ -f "$ALFRED_PREFS_JSON" ]; then
+    CURRENT=$(python3 -c "import json; print(json.load(open('$ALFRED_PREFS_JSON'))['current'])" 2>/dev/null || true)
+    if [ "$CURRENT" != "$ALFRED_TARGET" ]; then
+        jq --arg path "$ALFRED_TARGET" '.current = $path' "$ALFRED_PREFS_JSON" > "${ALFRED_PREFS_JSON}.tmp" \
+            && mv "${ALFRED_PREFS_JSON}.tmp" "$ALFRED_PREFS_JSON"
+        echo "→ Pointed Alfred preferences to $ALFRED_TARGET"
+    else
+        echo "→ Alfred already using dotfiles preferences"
+    fi
+else
+    echo "→ Alfred not installed yet, skipping"
+fi
+
+# 11. App settings
 echo ""
 echo "--- App Settings ---"
 echo "→ Importing Rectangle Pro settings..."
 defaults import com.knollsoft.Hookshot "$DOTFILES/rectangle-pro/settings.plist"
 
-# 11. mise
+# 12. mise
 echo ""
 echo "--- mise ---"
 mkdir -p "$HOME/.config/mise"
@@ -144,4 +162,6 @@ echo "  6. Open Alfred, set Cmd+Space as hotkey"
 echo "  7. Open Tailscale, sign in"
 echo "  8. Run 'gh auth login' to authenticate GitHub CLI"
 echo "  9. Run 'claude' to authenticate Claude Code"
-echo " 10. Restart your terminal to pick up shell config"
+echo " 10. System Settings > Internet Accounts > add Google account for Calendar"
+echo " 11. Messages > Settings > uncheck 'Play sound effects'"
+echo " 12. Restart your terminal to pick up shell config"

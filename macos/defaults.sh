@@ -4,6 +4,18 @@ set -euo pipefail
 
 echo "=== macOS Defaults ==="
 
+# Enable Touch ID for sudo
+echo "→ Enabling Touch ID for sudo..."
+if [ ! -f /etc/pam.d/sudo_local ]; then
+    sudo cp /etc/pam.d/sudo_local.template /etc/pam.d/sudo_local
+    sudo sed -i '' 's/#auth/auth/' /etc/pam.d/sudo_local
+fi
+
+# Disable display sleep (battery and power)
+echo "→ Disabling display sleep..."
+sudo pmset -b displaysleep 0
+sudo pmset -c displaysleep 0
+
 # Disable natural scroll direction (use traditional scrolling)
 echo "→ Disabling natural scroll direction..."
 defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
@@ -69,6 +81,10 @@ defaults write com.apple.AppleMultitouchMouse MouseButtonMode -string TwoButton
 defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseButtonMode -string TwoButton
 defaults write com.apple.AppleMultitouchMouse MouseButtonDivision -int 55
 defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseButtonDivision -int 55
+
+# VS Code: disable press-and-hold for vim key repeat
+echo "→ Disabling press-and-hold for VS Code..."
+defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
 # Dock: clear icons, auto-hide, no recents, icon size 44
 echo "→ Configuring Dock..."
