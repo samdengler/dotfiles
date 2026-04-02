@@ -3,6 +3,8 @@
 	email = samdengler@gmail.com
 [init]
 	defaultBranch = main
+[ghq]
+	root = ~/src
 [credential "https://github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential

@@ -19,6 +19,8 @@ cask "rectangle-pro"
 cask "tailscale-app"
 cask "jump-desktop"
 cask "visual-studio-code"
+cask "discord"
 
 # Mac App Store apps
+cask "mimestream"
 # mas "Mail for Gmail", id: 1587583867  # TODO: fix Apple ID issue (dotfiles-u58)
