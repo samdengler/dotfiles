@@ -10,7 +10,7 @@ This branch is for setting up a Mac that does **not** yet have admin access (so 
 4. Install awscli + dolt manually (links below).
 5. Run the post-bootstrap "Manual steps" that `bootstrap.sh` prints.
 
-> **Note:** 1Password, Tailscale, and Jump Desktop are intentionally omitted on this branch — not needed/available on the work machine. You'll log into `gh`, `claude`, Discord, etc. with credentials from your work password manager / iCloud Keychain / manual entry.
+> **Note:** 1Password, Tailscale, Jump Desktop, Claude (desktop), and Claude Code are intentionally omitted on this branch — not needed/available on the work machine. You'll log into `gh`, Discord, etc. with credentials from your work password manager / iCloud Keychain / manual entry.
 
 ## GUI apps — download from vendor
 
@@ -19,8 +19,6 @@ This branch is for setting up a Mac that does **not** yet have admin access (so 
 | Google Chrome | https://www.google.com/chrome/ |
 | Ghostty | https://ghostty.org/download |
 | Alfred | https://www.alfredapp.com/ |
-| Claude (desktop) | https://claude.ai/download |
-| Claude Code | https://claude.com/claude-code (or `npm i -g @anthropic-ai/claude-code` once `mise` provides node) |
 | Rectangle Pro | https://rectangleapp.com/pro |
 | Visual Studio Code | https://code.visualstudio.com/Download |
 | Discord | https://discord.com/download |

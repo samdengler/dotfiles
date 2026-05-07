@@ -130,27 +130,7 @@ mkdir -p "$HOME/.config"
 ln -sf "$DOTFILES/ghostty" "$HOME/.config/ghostty"
 echo "→ Linked ghostty config"
 
-# 9. Claude Code
-echo ""
-echo "--- Claude Code ---"
-mkdir -p "$HOME/.claude"
-if [ -f "$HOME/.claude/settings.json" ] && [ ! -L "$HOME/.claude/settings.json" ]; then
-    echo "→ Backing up existing settings.json to settings.json.bak"
-    cp "$HOME/.claude/settings.json" "$HOME/.claude/settings.json.bak"
-fi
-ln -sf "$DOTFILES/claude/settings.json" "$HOME/.claude/settings.json"
-echo "→ Linked Claude Code settings.json"
-# Patch ~/.claude.json preferences (vim mode, remote control)
-CLAUDE_JSON="$HOME/.claude.json"
-if [ -f "$CLAUDE_JSON" ]; then
-    jq '.editorMode = "vim" | .remoteControlAtStartup = true' "$CLAUDE_JSON" > "${CLAUDE_JSON}.tmp" \
-        && mv "${CLAUDE_JSON}.tmp" "$CLAUDE_JSON"
-else
-    echo '{"editorMode":"vim","remoteControlAtStartup":true}' > "$CLAUDE_JSON"
-fi
-echo "→ Set vim mode and remote control in claude.json"
-
-# 10. Alfred (point preferences to dotfiles)
+# 9. Alfred (point preferences to dotfiles)
 echo ""
 echo "--- Alfred ---"
 ALFRED_PREFS_JSON="$HOME/Library/Application Support/Alfred/prefs.json"
@@ -197,9 +177,8 @@ echo "  1. Install GUI apps + awscli/dolt/Mimestream per MANUAL_INSTALL.md (if n
 echo "  2. Open Rectangle Pro, activate license"
 echo "  3. Open Alfred, set Cmd+Space as hotkey"
 echo "  4. Run 'gh auth login' to authenticate GitHub CLI"
-echo "  5. Run 'claude' to authenticate Claude Code"
-echo "  6. System Settings > Internet Accounts > add Google account for Calendar"
-echo "  7. Messages > Settings > uncheck 'Play sound effects'"
-echo "  8. Restart your terminal to pick up shell config"
+echo "  5. System Settings > Internet Accounts > add Google account for Calendar"
+echo "  6. Messages > Settings > uncheck 'Play sound effects'"
+echo "  7. Restart your terminal to pick up shell config"
 echo ""
 echo "Once admin is granted, switch back: git checkout master && ~/.dotfiles/bootstrap.sh"
