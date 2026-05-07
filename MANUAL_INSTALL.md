@@ -4,27 +4,24 @@ This branch is for setting up a Mac that does **not** yet have admin access (so 
 
 ## Order of operations
 
-1. Install **1Password** first (it gates other auth flows).
-2. Install the rest of the GUI apps from the vendor links below.
-3. Run `~/.dotfiles/bootstrap.sh` — installs user-space CLI tools (uv, mise, ruff, gh, bd) into `~/.local/bin`, runs the no-sudo subset of `macos/defaults.sh`, and creates all the dotfile symlinks.
-4. Install Mac App Store apps from the App Store UI.
-5. Install awscli + dolt manually (links below).
-6. Run the post-bootstrap "Manual steps" that `bootstrap.sh` prints.
+1. Install the GUI apps from the vendor links below.
+2. Run `~/.dotfiles/bootstrap.sh` — installs user-space CLI tools (uv, mise, ruff, gh, bd) into `~/.local/bin`, runs the no-sudo subset of `macos/defaults.sh`, and creates all the dotfile symlinks.
+3. Install Mac App Store apps from the App Store UI.
+4. Install awscli + dolt manually (links below).
+5. Run the post-bootstrap "Manual steps" that `bootstrap.sh` prints.
+
+> **Note:** 1Password, Tailscale, and Jump Desktop are intentionally omitted on this branch — not needed/available on the work machine. You'll log into `gh`, `claude`, Discord, etc. with credentials from your work password manager / iCloud Keychain / manual entry.
 
 ## GUI apps — download from vendor
 
 | App | Download |
 |---|---|
-| 1Password | https://1password.com/downloads/mac |
-| 1Password CLI | https://developer.1password.com/docs/cli/get-started |
 | Google Chrome | https://www.google.com/chrome/ |
 | Ghostty | https://ghostty.org/download |
 | Alfred | https://www.alfredapp.com/ |
 | Claude (desktop) | https://claude.ai/download |
 | Claude Code | https://claude.com/claude-code (or `npm i -g @anthropic-ai/claude-code` once `mise` provides node) |
 | Rectangle Pro | https://rectangleapp.com/pro |
-| Tailscale | https://tailscale.com/download/mac |
-| Jump Desktop | https://jumpdesktop.com/downloads/mac/ |
 | Visual Studio Code | https://code.visualstudio.com/Download |
 | Discord | https://discord.com/download |
 | Snagit | https://www.techsmith.com/screen-capture.html |
