@@ -4,17 +4,21 @@ set -euo pipefail
 
 echo "=== macOS Defaults ==="
 
-# Enable Touch ID for sudo
-echo "→ Enabling Touch ID for sudo..."
-if [ ! -f /etc/pam.d/sudo_local ]; then
-    sudo cp /etc/pam.d/sudo_local.template /etc/pam.d/sudo_local
-    sudo sed -i '' 's/#auth/auth/' /etc/pam.d/sudo_local
-fi
+if [ -z "${NO_SUDO:-}" ]; then
+    # Enable Touch ID for sudo
+    echo "→ Enabling Touch ID for sudo..."
+    if [ ! -f /etc/pam.d/sudo_local ]; then
+        sudo cp /etc/pam.d/sudo_local.template /etc/pam.d/sudo_local
+        sudo sed -i '' 's/#auth/auth/' /etc/pam.d/sudo_local
+    fi
 
-# Disable display sleep (battery and power)
-echo "→ Disabling display sleep..."
-sudo pmset -b displaysleep 0
-sudo pmset -c displaysleep 0
+    # Disable display sleep (battery and power)
+    echo "→ Disabling display sleep..."
+    sudo pmset -b displaysleep 0
+    sudo pmset -c displaysleep 0
+else
+    echo "→ Skipping sudo-required defaults (NO_SUDO=1): Touch ID, display sleep"
+fi
 
 # Disable natural scroll direction (use traditional scrolling)
 echo "→ Disabling natural scroll direction..."

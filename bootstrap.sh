@@ -7,47 +7,87 @@ DOTFILES="$(cd "$(dirname "$0")" && pwd)"
 
 echo "=== Bootstrap ==="
 
-# 1. macOS defaults
+# 1. macOS defaults (NO_SUDO=1 skips sudo-required blocks; this branch has no admin)
 echo ""
 echo "--- macOS Defaults ---"
-bash "$DOTFILES/macos/defaults.sh"
+NO_SUDO=1 bash "$DOTFILES/macos/defaults.sh"
 
-# 2. Homebrew
+# 2. User-space CLI tools (no Homebrew on this branch — see MANUAL_INSTALL.md)
 echo ""
-echo "--- Homebrew ---"
-if ! command -v brew &>/dev/null; then
-    echo "→ Installing Homebrew..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+echo "--- User-Space CLI Tools ---"
+mkdir -p "$HOME/.local/bin"
+export PATH="$HOME/.local/bin:$PATH"
+
+if ! command -v uv &>/dev/null; then
+    echo "→ Installing uv..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
 else
-    echo "→ Homebrew already installed"
+    echo "→ uv already installed"
 fi
 
-# 3. Sudoers (allow passwordless sudo for mas)
-echo ""
-echo "--- Sudoers ---"
-MAS_SUDOERS="/etc/sudoers.d/mas"
-if [ ! -f "$MAS_SUDOERS" ]; then
-    echo "→ Configuring passwordless sudo for mas (requires sudo password once)..."
-    echo "$(whoami) ALL=(ALL) NOPASSWD: /opt/homebrew/bin/mas" | sudo tee "$MAS_SUDOERS" > /dev/null
-    sudo chmod 440 "$MAS_SUDOERS"
-    sudo visudo -cf "$MAS_SUDOERS"
-    echo "→ Created $MAS_SUDOERS"
+if ! command -v mise &>/dev/null; then
+    echo "→ Installing mise..."
+    curl -fsSL https://mise.run | sh
 else
-    echo "→ $MAS_SUDOERS already exists"
+    echo "→ mise already installed"
 fi
 
-# 4. Brewfile (mas apps require sudo, so install them separately)
-echo ""
-echo "--- Brew Bundle ---"
-MAS_APPS=$(grep '^mas ' "$DOTFILES/Brewfile" | sed 's/.*id: //' || true)
-HOMEBREW_BUNDLE_MAS_SKIP="$MAS_APPS" brew bundle --file="$DOTFILES/Brewfile"
-if [ -n "$MAS_APPS" ]; then
-    echo "→ Installing Mac App Store apps (requires sudo password)..."
-    for app_id in $MAS_APPS; do
-        sudo mas install "$app_id" || echo "⚠  Failed to install app $app_id — run 'sudo mas install $app_id' manually"
-    done
+if ! command -v ruff &>/dev/null; then
+    echo "→ Installing ruff via uv..."
+    uv tool install ruff
+else
+    echo "→ ruff already installed"
 fi
+
+if ! command -v gh &>/dev/null; then
+    echo "→ Installing gh..."
+    GH_ARCH=$(uname -m)
+    [ "$GH_ARCH" = "arm64" ] && GH_ARCH=arm64 || GH_ARCH=amd64
+    GH_TARBALL=$(curl -fsSL https://api.github.com/repos/cli/cli/releases/latest \
+        | grep "browser_download_url.*macOS_${GH_ARCH}.zip" \
+        | head -n1 | cut -d'"' -f4)
+    GH_TMP=$(mktemp -d)
+    curl -fsSL "$GH_TARBALL" -o "$GH_TMP/gh.zip"
+    unzip -q "$GH_TMP/gh.zip" -d "$GH_TMP"
+    install "$GH_TMP"/gh_*/bin/gh "$HOME/.local/bin/gh"
+    rm -rf "$GH_TMP"
+else
+    echo "→ gh already installed"
+fi
+
+if ! command -v bd &>/dev/null; then
+    echo "→ Installing bd (beads)..."
+    BD_ARCH=$(uname -m)
+    BD_URL=$(curl -fsSL https://api.github.com/repos/steveyegge/beads/releases/latest \
+        | grep "browser_download_url.*darwin.*${BD_ARCH}" \
+        | head -n1 | cut -d'"' -f4)
+    if [ -z "$BD_URL" ]; then
+        echo "⚠  Could not find a darwin/${BD_ARCH} bd release asset — install manually from https://github.com/steveyegge/beads/releases"
+    else
+        BD_TMP=$(mktemp -d)
+        case "$BD_URL" in
+            *.tar.gz|*.tgz)
+                curl -fsSL "$BD_URL" -o "$BD_TMP/bd.tgz"
+                tar -xzf "$BD_TMP/bd.tgz" -C "$BD_TMP"
+                install "$(find "$BD_TMP" -name bd -type f | head -n1)" "$HOME/.local/bin/bd"
+                ;;
+            *.zip)
+                curl -fsSL "$BD_URL" -o "$BD_TMP/bd.zip"
+                unzip -q "$BD_TMP/bd.zip" -d "$BD_TMP"
+                install "$(find "$BD_TMP" -name bd -type f | head -n1)" "$HOME/.local/bin/bd"
+                ;;
+            *)
+                curl -fsSL "$BD_URL" -o "$HOME/.local/bin/bd"
+                chmod +x "$HOME/.local/bin/bd"
+                ;;
+        esac
+        rm -rf "$BD_TMP"
+    fi
+else
+    echo "→ bd already installed"
+fi
+
+echo "→ See MANUAL_INSTALL.md for awscli, dolt, GUI apps, and Mac App Store apps."
 
 # 5. Git config (before gh auth so credential helpers append to our file)
 echo ""
@@ -144,7 +184,7 @@ if [ -f "$HOME/.config/mise/config.toml" ] && [ ! -L "$HOME/.config/mise/config.
 fi
 ln -sf "$DOTFILES/mise/config.toml" "$HOME/.config/mise/config.toml"
 echo "→ Linked mise config.toml"
-eval "$(/opt/homebrew/bin/brew shellenv)"
+export PATH="$HOME/.local/bin:$PATH"
 eval "$(mise activate bash)"
 mise install
 echo "→ mise tools installed"
@@ -153,15 +193,18 @@ echo ""
 echo "=== Bootstrap complete ==="
 echo ""
 echo "Manual steps:"
-echo "  1. Open 1Password and sign in"
-echo "  2. Install 1Password Safari extension (App Store)"
-echo "  3. Safari > Settings > AutoFill > uncheck 'Usernames and passwords'"
-echo "  4. Safari > Settings > Extensions > disable 'Passwords'"
-echo "  5. Open Rectangle Pro, activate license"
-echo "  6. Open Alfred, set Cmd+Space as hotkey"
-echo "  7. Open Tailscale, sign in"
-echo "  8. Run 'gh auth login' to authenticate GitHub CLI"
-echo "  9. Run 'claude' to authenticate Claude Code"
-echo " 10. System Settings > Internet Accounts > add Google account for Calendar"
-echo " 11. Messages > Settings > uncheck 'Play sound effects'"
-echo " 12. Restart your terminal to pick up shell config"
+echo "  1. Install GUI apps + awscli/dolt/Mimestream per MANUAL_INSTALL.md (if not done)"
+echo "  2. Open 1Password and sign in"
+echo "  3. Install 1Password Safari extension (App Store)"
+echo "  4. Safari > Settings > AutoFill > uncheck 'Usernames and passwords'"
+echo "  5. Safari > Settings > Extensions > disable 'Passwords'"
+echo "  6. Open Rectangle Pro, activate license"
+echo "  7. Open Alfred, set Cmd+Space as hotkey"
+echo "  8. Open Tailscale, sign in"
+echo "  9. Run 'gh auth login' to authenticate GitHub CLI"
+echo " 10. Run 'claude' to authenticate Claude Code"
+echo " 11. System Settings > Internet Accounts > add Google account for Calendar"
+echo " 12. Messages > Settings > uncheck 'Play sound effects'"
+echo " 13. Restart your terminal to pick up shell config"
+echo ""
+echo "Once admin is granted, switch back: git checkout master && ~/.dotfiles/bootstrap.sh"
