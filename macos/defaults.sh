@@ -90,6 +90,10 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseButtonDivisi
 echo "→ Disabling press-and-hold for VS Code..."
 defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
+# Kiro: disable press-and-hold for vim key repeat
+echo "→ Disabling press-and-hold for Kiro..."
+defaults write dev.kiro.desktop ApplePressAndHoldEnabled -bool false
+
 # Dock: clear icons, auto-hide, no recents, icon size 44
 echo "→ Configuring Dock..."
 defaults write com.apple.dock persistent-apps -array
