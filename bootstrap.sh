@@ -39,6 +39,27 @@ else
     echo "→ ruff already installed"
 fi
 
+if ! uv tool list 2>/dev/null | grep -q pymupdf; then
+    echo "→ Installing pymupdf via uv..."
+    uv tool install pymupdf
+else
+    echo "→ pymupdf already installed"
+fi
+
+if ! command -v xelatex &>/dev/null; then
+    echo "→ Installing TinyTeX (includes xelatex)..."
+    curl -sL "https://raw.githubusercontent.com/rstudio/tinytex/main/tools/install-bin-unix.sh" | sh
+else
+    echo "→ TinyTeX/xelatex already installed"
+fi
+
+if ! command -v guppi &>/dev/null; then
+    echo "→ Installing guppi-cli via uv..."
+    uv tool install guppi-cli --from git+https://github.com/samdengler/guppi-cli
+else
+    echo "→ guppi-cli already installed"
+fi
+
 if ! command -v gh &>/dev/null; then
     echo "→ Installing gh..."
     GH_ARCH=$(uname -m)

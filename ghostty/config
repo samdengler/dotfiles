@@ -18,3 +18,5 @@ keybind = ctrl+0=text:\x020
 keybind = ctrl+1=text:\x021
 keybind = ctrl+2=text:\x022
 keybind = ctrl+3=text:\x023
+
+confirm-close-surface = false

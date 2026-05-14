@@ -1,13 +1,13 @@
 [user]
 	name = Sam Dengler
-	email = samdengler@gmail.com
+	email = sam.dengler@delta.com
 [init]
 	defaultBranch = main
 [ghq]
 	root = ~/src
 [credential "https://github.com"]
 	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !/Users/976030/.local/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !/Users/976030/.local/bin/gh auth git-credential

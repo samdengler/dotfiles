@@ -102,9 +102,13 @@ defaults write com.apple.dock show-recents -bool false
 defaults write com.apple.dock tilesize -int 44
 killall Dock
 
-# Finder: list view by default
+# Finder: list view by default, show extensions, disable warnings
 echo "→ Configuring Finder..."
 defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+defaults write com.apple.finder WarnOnEmptyTrash -bool false
+defaults write com.apple.finder FXEnableRemoveFromICloudDriveWarning -bool false
 killall Finder
 
 # Screenshots: save to ~/Screenshots instead of Desktop
