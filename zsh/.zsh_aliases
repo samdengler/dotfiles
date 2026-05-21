@@ -5,3 +5,4 @@ alias k="kiro-cli"
 # Functions
 spike() { cd "$(guppi-spiker new "$@")"; }
 gsg() { cd "$(guppi-spiker go "$@")"; }
+asap() { spike "$@" && claude; }
