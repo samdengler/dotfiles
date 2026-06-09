@@ -6,6 +6,9 @@ brew "mas"
 brew "uv"
 brew "ruff"
 brew "postgresql@16"
+brew "colima"
+brew "docker"
+brew "docker-compose"
 brew "steveyegge/beads/bd"
 
 # GUI apps (install 1Password first — needed for auth flows)
@@ -21,7 +24,6 @@ cask "tailscale-app"
 cask "jump-desktop"
 cask "visual-studio-code"
 cask "discord"
-cask "docker-desktop"
 
 # Mac App Store apps
 cask "mimestream"
