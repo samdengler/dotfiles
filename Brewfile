@@ -29,3 +29,5 @@ cask "cmux"
 # Mac App Store apps
 cask "mimestream"
 # mas "Mail for Gmail", id: 1587583867  # TODO: fix Apple ID issue (dotfiles-u58)
+# Docker CLI plugin for extended build capabilities with BuildKit
+brew "docker-buildx"
