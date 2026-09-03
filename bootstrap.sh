@@ -68,7 +68,7 @@ echo "→ Configured git credential helper"
 # 7. Shell config (symlink — re-running just overwrites the same link)
 echo ""
 echo "--- Shell Config ---"
-for file in .zshenv .zshrc; do
+for file in .zshenv .zshrc .zsh_aliases; do
     src="$DOTFILES/zsh/$file"
     dst="$HOME/$file"
     if [ -f "$dst" ] && [ ! -L "$dst" ]; then

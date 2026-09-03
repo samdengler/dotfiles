@@ -2,6 +2,8 @@
 #theme = Gruvbox Dark
 theme = github-dark-dimmed
 
+font-size = 16
+
 # https://notes.iunknown.com/blog/2025/05/macbook-pro-setup
 #theme = Argonaut
 #minimum-contrast = 2

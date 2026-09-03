@@ -24,6 +24,7 @@ cask "tailscale-app"
 cask "jump-desktop"
 cask "visual-studio-code"
 cask "discord"
+cask "cmux"
 
 # Mac App Store apps
 cask "mimestream"

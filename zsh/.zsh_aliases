@@ -1,0 +1,6 @@
+asap() {
+  local dir
+  dir="$(guppi-spiker new "$@")" || return
+  cd "$dir" && claude
+}
+
