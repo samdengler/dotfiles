@@ -40,6 +40,11 @@ fi
 # 4. Brewfile (mas apps require sudo, so install them separately)
 echo ""
 echo "--- Brew Bundle ---"
+# Homebrew refuses to load formulae from third-party taps until they are trusted
+for tap in $(grep -oE '^brew "[^/]+/[^/]+/' "$DOTFILES/Brewfile" | sed -E 's/^brew "//; s/\/$//' | sort -u); do
+    brew trust --tap "$tap" >/dev/null
+    echo "→ Trusted tap $tap"
+done
 MAS_APPS=$(grep '^mas ' "$DOTFILES/Brewfile" | sed 's/.*id: //' || true)
 HOMEBREW_BUNDLE_MAS_SKIP="$MAS_APPS" brew bundle --file="$DOTFILES/Brewfile"
 if [ -n "$MAS_APPS" ]; then
@@ -49,7 +54,17 @@ if [ -n "$MAS_APPS" ]; then
     done
 fi
 
-# 5. Git config (before gh auth so credential helpers append to our file)
+# 5. Colima (docker runtime; start as a login service so docker works after reboot)
+echo ""
+echo "--- Colima ---"
+if brew services list | grep -E '^colima\s+started' >/dev/null; then
+    echo "→ Colima service already running"
+else
+    brew services start colima
+    echo "→ Started Colima service"
+fi
+
+# 6. Git config (before gh auth so credential helpers append to our file)
 echo ""
 echo "--- Git Config ---"
 if [ -f "$HOME/.gitconfig" ] && [ ! -L "$HOME/.gitconfig" ]; then
@@ -59,13 +74,13 @@ fi
 ln -sf "$DOTFILES/git/gitconfig" "$HOME/.gitconfig"
 echo "→ Linked .gitconfig"
 
-# 6. GitHub CLI
+# 7. GitHub CLI
 echo ""
 echo "--- GitHub CLI ---"
 gh auth setup-git
 echo "→ Configured git credential helper"
 
-# 7. Shell config (symlink — re-running just overwrites the same link)
+# 8. Shell config (symlink — re-running just overwrites the same link)
 echo ""
 echo "--- Shell Config ---"
 for file in .zshenv .zshrc .zsh_aliases; do
@@ -79,7 +94,7 @@ for file in .zshenv .zshrc .zsh_aliases; do
     echo "→ Linked $file"
 done
 
-# 8. Ghostty
+# 9. Ghostty
 echo ""
 echo "--- Ghostty ---"
 if [ -d "$HOME/.config/ghostty" ] && [ ! -L "$HOME/.config/ghostty" ]; then
@@ -90,7 +105,7 @@ mkdir -p "$HOME/.config"
 ln -sf "$DOTFILES/ghostty" "$HOME/.config/ghostty"
 echo "→ Linked ghostty config"
 
-# 9. Claude Code
+# 10. Claude Code
 echo ""
 echo "--- Claude Code ---"
 mkdir -p "$HOME/.claude"
@@ -110,7 +125,7 @@ else
 fi
 echo "→ Set vim mode and remote control in claude.json"
 
-# 10. Alfred (point preferences to dotfiles)
+# 11. Alfred (point preferences to dotfiles)
 echo ""
 echo "--- Alfred ---"
 ALFRED_PREFS_JSON="$HOME/Library/Application Support/Alfred/prefs.json"
@@ -128,13 +143,13 @@ else
     echo "→ Alfred not installed yet, skipping"
 fi
 
-# 11. App settings
+# 12. App settings
 echo ""
 echo "--- App Settings ---"
 echo "→ Importing Rectangle Pro settings..."
 defaults import com.knollsoft.Hookshot "$DOTFILES/rectangle-pro/settings.plist"
 
-# 12. mise
+# 13. mise
 echo ""
 echo "--- mise ---"
 mkdir -p "$HOME/.config/mise"
