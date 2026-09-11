@@ -164,6 +164,16 @@ eval "$(mise activate bash)"
 mise install
 echo "→ mise tools installed"
 
+# 14. Lean (elan comes from the Brewfile; this installs the default toolchain)
+echo ""
+echo "--- Lean ---"
+if [ -f "$HOME/.elan/settings.toml" ]; then
+    echo "→ elan already initialized, skipping"
+else
+    elan-init -y --no-modify-path --default-toolchain stable
+    echo "→ elan initialized with stable toolchain"
+fi
+
 echo ""
 echo "=== Bootstrap complete ==="
 echo ""
