@@ -9,7 +9,6 @@ brew "postgresql@16"
 brew "colima"
 brew "docker"
 brew "docker-compose"
-brew "steveyegge/beads/bd"
 
 # GUI apps (install 1Password first — needed for auth flows)
 cask "1password"
