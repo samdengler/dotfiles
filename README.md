@@ -35,7 +35,22 @@ Then commit and push.
 | `zsh/.zshenv` | Homebrew PATH (all shells) |
 | `zsh/.zshrc` | mise + vi keybindings (interactive shells) |
 | `mise/config.toml` | Dev tool versions + global npm packages (Node, netlify-cli) |
+| `claude/settings.json` | Claude Code settings (plugins, model, permissions) |
+| `claude/CLAUDE.md` | Claude Code global instructions (writing style) |
+| `ghostty/` | Ghostty terminal config |
+| `alfred/` | Alfred preferences bundle |
 | `rectangle-pro/settings.plist` | Window management shortcuts and layouts |
+
+`bootstrap.sh` also installs [GUPPI](https://github.com/samdengler/guppi-cli) and the
+`dotfiles`, `spiker`, and `usher` skills from [guppi-skills](https://github.com/samdengler/guppi-skills),
+cloned via ghq into `~/src/github.com/samdengler/`.
+
+## Claude Code settings drift
+
+Claude Code saves `~/.claude/settings.json` by writing a temp file and renaming it, which
+replaces the symlink with a regular file. When that happens the live file and the repo copy
+diverge silently. To reconcile: copy the live file into `claude/settings.json`, commit, and
+re-run `bootstrap.sh` (it backs up the regular file and relinks).
 
 ## Manual steps (after bootstrap)
 

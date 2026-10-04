@@ -7,11 +7,13 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "claude-fable-5-1[1m]",
+  "model": "fable",
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true,
     "linked-intent-dev@jszmajda-lid": true,
-    "arrow-maintenance@jszmajda-lid": true
+    "arrow-maintenance@jszmajda-lid": true,
+    "1password@1password": true,
+    "cc-plugin-you-should-know@builtin": true
   },
   "extraKnownMarketplaces": {
     "jszmajda-lid": {
@@ -19,6 +21,17 @@
         "source": "github",
         "repo": "jszmajda/lid"
       }
+    },
+    "1password": {
+      "source": {
+        "source": "github",
+        "repo": "1Password/1password-claude-plugin"
+      }
+    }
+  },
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
     }
   },
   "tui": "fullscreen",
@@ -28,6 +41,10 @@
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
   "autoMode": {
+    "allow": [
+      "$defaults",
+      "Sending test chat messages through Claude in Chrome to the user's own HR assistant projects on https://chat.dengler.io (/p/hr-connect/ and /p/hr/) to check their scenarios is allowed. These are the user's test pages in their own account; a chat message there, including one that hands the chat to the Amazon Connect HR service desk queue, is not a deploy. Confirming a proposed change that commits to the HR record is not covered by this rule."
+    ],
     "environment": [
       "### Org-wide",
       "**Organization**: None configured",

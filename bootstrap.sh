@@ -115,6 +115,14 @@ if [ -f "$HOME/.claude/settings.json" ] && [ ! -L "$HOME/.claude/settings.json" 
 fi
 ln -sf "$DOTFILES/claude/settings.json" "$HOME/.claude/settings.json"
 echo "→ Linked Claude Code settings.json"
+# Note: Claude Code saves settings via write-to-temp + rename, which replaces
+# the symlink with a regular file. Re-running bootstrap backs up and relinks.
+if [ -f "$HOME/.claude/CLAUDE.md" ] && [ ! -L "$HOME/.claude/CLAUDE.md" ]; then
+    echo "→ Backing up existing CLAUDE.md to CLAUDE.md.bak"
+    cp "$HOME/.claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md.bak"
+fi
+ln -sf "$DOTFILES/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+echo "→ Linked Claude Code global CLAUDE.md"
 # Patch ~/.claude.json preferences (vim mode, remote control)
 CLAUDE_JSON="$HOME/.claude.json"
 if [ -f "$CLAUDE_JSON" ]; then
@@ -179,6 +187,37 @@ else
     elan-init -y --no-modify-path --default-toolchain stable
     echo "→ elan initialized with stable toolchain"
 fi
+
+# 15. GUPPI (personal CLI/skill framework; uv from Brewfile, ghq from mise)
+echo ""
+echo "--- GUPPI ---"
+export PATH="$HOME/.local/bin:$PATH"
+GUPPI_CLI="$HOME/src/github.com/samdengler/guppi-cli"
+GUPPI_SKILLS="$HOME/src/github.com/samdengler/guppi-skills"
+mise exec -- ghq get -u samdengler/guppi-cli
+mise exec -- ghq get -u samdengler/guppi-skills
+if command -v guppi &>/dev/null; then
+    echo "→ guppi already installed"
+else
+    uv tool install --editable "$GUPPI_CLI"
+    echo "→ Installed guppi-cli (editable from $GUPPI_CLI)"
+fi
+if guppi skills source list 2>/dev/null | grep -q '^guppi-skills '; then
+    echo "→ guppi-skills source already configured"
+else
+    guppi skills source add guppi-skills "$GUPPI_SKILLS"
+    echo "→ Added guppi-skills source"
+fi
+for skill in dotfiles spiker usher; do
+    if command -v "guppi-$skill" &>/dev/null; then
+        echo "→ guppi-$skill already installed"
+    else
+        guppi skills install "$skill" --source guppi-skills
+        echo "→ Installed guppi-$skill"
+    fi
+done
+mkdir -p "$HOME/spikes"
+echo "→ GUPPI ready"
 
 echo ""
 echo "=== Bootstrap complete ==="

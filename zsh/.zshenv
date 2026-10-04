@@ -3,4 +3,5 @@ eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 
 # uv tool install location
 export PATH="$HOME/.local/bin:$PATH"
-. "$HOME/.cargo/env"
+# Rust (rustup installs here; not managed by dotfiles yet, see dotfiles beads)
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
