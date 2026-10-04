@@ -126,16 +126,22 @@ fi
 echo "→ Set vim mode and remote control in claude.json"
 
 # 11. Alfred (point preferences to dotfiles)
+# "current" is the bundle itself.  Alfred resets it to the default bundle on
+# launch unless "syncfolders" also names the folder holding the bundle, keyed
+# by Alfred's major version.  This writes what Alfred Preferences > Advanced >
+# Set preferences folder writes.
 echo ""
 echo "--- Alfred ---"
 ALFRED_PREFS_JSON="$HOME/Library/Application Support/Alfred/prefs.json"
-ALFRED_TARGET="$DOTFILES/alfred"
+ALFRED_SYNC="$DOTFILES/alfred"
+ALFRED_TARGET="$ALFRED_SYNC/Alfred.alfredpreferences"
 if [ -f "$ALFRED_PREFS_JSON" ]; then
-    CURRENT=$(python3 -c "import json; print(json.load(open('$ALFRED_PREFS_JSON'))['current'])" 2>/dev/null || true)
+    CURRENT=$(jq -r '.current // empty' "$ALFRED_PREFS_JSON" 2>/dev/null || true)
     if [ "$CURRENT" != "$ALFRED_TARGET" ]; then
-        jq --arg path "$ALFRED_TARGET" '.current = $path' "$ALFRED_PREFS_JSON" > "${ALFRED_PREFS_JSON}.tmp" \
+        jq --arg current "$ALFRED_TARGET" --arg sync "~${ALFRED_SYNC#"$HOME"}" \
+            '.current = $current | .syncfolders["5"] = $sync' "$ALFRED_PREFS_JSON" > "${ALFRED_PREFS_JSON}.tmp" \
             && mv "${ALFRED_PREFS_JSON}.tmp" "$ALFRED_PREFS_JSON"
-        echo "→ Pointed Alfred preferences to $ALFRED_TARGET"
+        echo "→ Pointed Alfred preferences to $ALFRED_TARGET (quit and reopen Alfred to apply)"
     else
         echo "→ Alfred already using dotfiles preferences"
     fi
