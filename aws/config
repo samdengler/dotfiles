@@ -1,0 +1,27 @@
+[sso-session personal]
+sso_start_url = https://d-9067b6394d.awsapps.com/start
+sso_region = us-east-1
+sso_registration_scopes = sso:account:access
+
+[default]
+sso_session = personal
+sso_account_id = 009080466601
+sso_role_name = AdministratorAccess
+region = us-east-1
+output = json
+
+# Break-glass access to the saml-lab sandbox via Identity Center.
+# Known-good door if the SAML federation config breaks.
+[profile saml-lab-sso]
+sso_session = personal
+sso_account_id = 852064978775
+sso_role_name = AdministratorAccess
+region = us-east-1
+output = json
+
+# SAML federation into saml-lab via PingOne -> sts:AssumeRoleWithSAML.
+# Credentials are minted on demand by saml2aws (idp account "saml-lab").
+[profile saml-lab]
+region = us-east-1
+output = json
+credential_process = saml2aws login --idp-account=saml-lab --credential-process

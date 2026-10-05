@@ -32,3 +32,7 @@ cask "mimestream"
 brew "docker-buildx"
 # Lean Theorem Prover installer and version manager
 brew "elan-init"
+# Official Amazon AWS command-line interface
+brew "awscli"
+# Login and retrieve AWS temporary credentials using a SAML IDP
+brew "saml2aws"

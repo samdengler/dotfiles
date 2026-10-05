@@ -178,7 +178,18 @@ eval "$(mise activate bash)"
 mise install
 echo "→ mise tools installed"
 
-# 14. Lean (elan comes from the Brewfile; this installs the default toolchain)
+# 14. AWS CLI (SSO profiles; credentials come from 'aws sso login', never from the repo)
+echo ""
+echo "--- AWS CLI ---"
+mkdir -p "$HOME/.aws"
+if [ -f "$HOME/.aws/config" ] && [ ! -L "$HOME/.aws/config" ]; then
+    echo "→ Backing up existing aws config to config.bak"
+    cp "$HOME/.aws/config" "$HOME/.aws/config.bak"
+fi
+ln -sf "$DOTFILES/aws/config" "$HOME/.aws/config"
+echo "→ Linked aws config"
+
+# 15. Lean (elan comes from the Brewfile; this installs the default toolchain)
 echo ""
 echo "--- Lean ---"
 if [ -f "$HOME/.elan/settings.toml" ]; then
@@ -188,7 +199,7 @@ else
     echo "→ elan initialized with stable toolchain"
 fi
 
-# 15. GUPPI (personal CLI/skill framework; uv from Brewfile, ghq from mise)
+# 16. GUPPI (personal CLI/skill framework; uv from Brewfile, ghq from mise)
 echo ""
 echo "--- GUPPI ---"
 export PATH="$HOME/.local/bin:$PATH"
@@ -232,6 +243,7 @@ echo "  6. Open Alfred, set Cmd+Space as hotkey"
 echo "  7. Open Tailscale, sign in"
 echo "  8. Run 'gh auth login' to authenticate GitHub CLI"
 echo "  9. Run 'claude' to authenticate Claude Code"
-echo " 10. System Settings > Internet Accounts > add Google account for Calendar"
-echo " 11. Messages > Settings > uncheck 'Play sound effects'"
-echo " 12. Restart your terminal to pick up shell config"
+echo " 10. Run 'aws sso login' to authenticate the AWS CLI"
+echo " 11. System Settings > Internet Accounts > add Google account for Calendar"
+echo " 12. Messages > Settings > uncheck 'Play sound effects'"
+echo " 13. Restart your terminal to pick up shell config"

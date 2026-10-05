@@ -34,6 +34,7 @@ Then commit and push.
 | `macos/defaults.sh` | System preferences (scroll, caps lock, spotlight, dock) |
 | `zsh/.zshenv` | Homebrew PATH (all shells) |
 | `zsh/.zshrc` | mise + vi keybindings (interactive shells) |
+| `aws/config` | AWS CLI SSO session and profiles (no credentials) |
 | `mise/config.toml` | Dev tool versions + global npm packages (Node, netlify-cli) |
 | `claude/settings.json` | Claude Code settings (plugins, model, permissions) |
 | `claude/CLAUDE.md` | Claude Code global instructions (writing style) |
@@ -63,7 +64,8 @@ re-run `bootstrap.sh` (it backs up the regular file and relinks).
 7. Open Tailscale, sign in
 8. Run `gh auth login` to authenticate GitHub CLI
 9. Run `claude` to authenticate Claude Code
-10. Restart your terminal
+10. Run `aws sso login` to authenticate the AWS CLI
+11. Restart your terminal
 
 ## TODO
 
